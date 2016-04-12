@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"time"
 )
 
 func main() {
@@ -12,7 +13,7 @@ func main() {
 	//增
 	stmt, err := db.Prepare("INSERT userinfo SET username=?,departname=?,created=?")
 	checkErr(err)
-	res, err := stmt.Exec("rancongjie", "研发部门", "2012-12-09")
+	res, err := stmt.Exec("rancongjie", "研发部门", time.Now())
 	checkErr(err)
 	id, err := res.LastInsertId()
 	checkErr(err)
@@ -41,9 +42,7 @@ func main() {
 
 	affect, err := res.RowsAffected()
 	checkErr(err)
-
 	fmt.Println(affect)
-
 	//删
 	stmt, err = db.Prepare("delete from userinfo where uid=?")
 	checkErr(err)
