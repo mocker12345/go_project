@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
+{{template "header" .}}
+  <title>我的博客</title>
+
 </head>
 <body>
-  <h1>hello my glang bolg</h1>
+  <div class="navbar navbar-default ">
+  	<div class="container">
+  		{{template "navbar" .}}
+  	</div>
+  </div>
+
+  <div class="container">
+  	<div class="page-header">
+  		<h1>这是文章名称</h1>
+  		<h6 class="text-muted">文章信息</h6>
+  		<p>
+  			文章内容
+  		</p>
+  	</div>
+  </div>
 </body>
 </html>

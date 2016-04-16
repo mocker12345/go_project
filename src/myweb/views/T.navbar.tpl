@@ -1,0 +1,17 @@
+{{define "navbar"}}
+<a class="navbar-brand" href="/">我的博客</a>
+  			<ul class="nav navbar-nav">
+  				<li {{if.IsHome}}class="active"{{end}}><a href="/">首页</a></li>
+  				<li {{if.IsCategory}}class="active"{{end}}><a href="/category">分类</a></li>
+  				<li {{if.IsTopic}}class="active"{{end}}><a href="/topic">文章</a></li>
+  		  </ul>
+<div class="pull-right">
+	<ul class="nav navbar-nav">
+		{{if .IsLogin}}
+		<li><a href="/login?exit=true">注销</a></li>
+		{{else}}
+		<li><a href="/login">登陆</a></li>
+		{{end}}
+	</ul>
+</div>
+{{end}}
