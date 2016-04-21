@@ -1,1 +1,1 @@
-# golang simple bolg
+# learn golang and a simple bolg
