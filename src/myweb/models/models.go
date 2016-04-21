@@ -6,6 +6,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"path"
+	"strconv"
 	"time"
 )
 
@@ -17,9 +18,7 @@ const (
 type Category struct {
 	Id              int64
 	Title           string
-	Created         time.Time `orm:"index"`
-	Views           int64     `orm:"index"`
-	TopicTime       time.Time `orm:"index"`
+	Views           int64 `orm:"index"`
 	TopicCount      int64
 	TopicLastUserId int64
 }
@@ -49,4 +48,40 @@ func RegisterDB() {
 	orm.RegisterDriver(_SQLITE3_DEIVER, orm.DRSqlite)
 	orm.RegisterDataBase("default", _SQLITE3_DEIVER, _DB_NAME, 10)
 
+}
+
+func AddCategory(name string) error {
+	o := orm.NewOrm()
+	cate := &Category{Title: name}
+	qs := o.QueryTable("category")
+	err := qs.Filter("title", name).One(cate)
+	if err == nil {
+		return err
+	}
+	_, err = o.Insert(cate)
+	if err == nil {
+		return err
+	}
+	return nil
+}
+func DeleteCategory(id string) error {
+
+	cid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return err
+	}
+	o := orm.NewOrm()
+	cate := &Category{Id: cid}
+	_, err = o.Delete(cate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func GetAllCategory() ([]*Category, error) {
+	o := orm.NewOrm()
+	cates := make([]*Category, 0)
+	qs := o.QueryTable("category")
+	_, err := qs.All(&cates)
+	return cates, err
 }
