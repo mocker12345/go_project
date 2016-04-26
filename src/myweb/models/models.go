@@ -85,3 +85,29 @@ func GetAllCategory() ([]*Category, error) {
 	_, err := qs.All(&cates)
 	return cates, err
 }
+
+func AddTopic(title string, content string) error {
+	o := orm.NewOrm()
+	topic := &Topic{
+		Title:      title,
+		Content:    content,
+		Created:    time.Now(),
+		Updated:    time.Now(),
+		RepalyTime: time.Now(),
+	}
+	_, err := o.Insert(topic)
+	return err
+}
+func GetAllTopic(isDesc bool) ([]*Topic, error) {
+	o := orm.NewOrm()
+	topics := make([]*Topic, 0)
+	qs := o.QueryTable("topic")
+	var err error
+	if isDesc {
+		_, err = qs.OrderBy("-created").All(&topics)
+	} else {
+		_, err = qs.All(&topics)
+	}
+
+	return topics, err
+}

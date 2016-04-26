@@ -1,0 +1,37 @@
+{{template "header" .}}
+  <title>文章</title>
+
+</head>
+<body>
+  <div class="navbar navbar-default ">
+  	<div class="container">
+  		{{template "navbar" .}}
+  	</div>
+  </div>
+
+  <div class="container">
+  	<h1> 文章列表</h1>
+  	<a href="/topic/add" class="btn btn-default">添加文章</a>
+    <table class="table table-striped">
+      <thead>
+        <th>＃</th>
+        <th>名称</th>
+        <th>最后更新</th>
+        <th>浏览</th>
+        <th>回复数</th> 
+      </thead>
+      <tbody>
+        {{range .Topics}}
+          <tr>
+            <td>{{.Id}}</td>
+            <td>{{.Title}}</td>
+            <td>{{.Updated}}</td>
+            <td>{{.Views}}</td>
+            <td>{{.RepalyCount}}</td>
+          </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
