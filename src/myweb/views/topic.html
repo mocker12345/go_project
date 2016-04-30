@@ -19,15 +19,17 @@
         <th>最后更新</th>
         <th>浏览</th>
         <th>回复数</th> 
+        <th>操作</th>
       </thead>
       <tbody>
         {{range .Topics}}
           <tr>
             <td>{{.Id}}</td>
-            <td>{{.Title}}</td>
+            <td><a href="/topic/view/{{.Id}}">{{.Title}}</a></td>
             <td>{{.Updated}}</td>
             <td>{{.Views}}</td>
             <td>{{.RepalyCount}}</td>
+            <td><a href="/topic/delete?tid={{.Id}}">删除</a></td>
           </tr>
         {{end}}
       </tbody>

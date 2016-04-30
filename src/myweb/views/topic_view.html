@@ -1,0 +1,19 @@
+{{template "header" .}}
+  <title>文章</title>
+
+</head>
+<body>
+  <div class="navbar navbar-default ">
+  	<div class="container">
+  		{{template "navbar" .}}
+  	</div>
+  </div>
+
+  <div class="container">
+  	{{with .Topic}}
+  	<h1>{{.Title}}<a class="btn btn-default" href="/topic/modify?tid={{.Id}}">修改文章</a></h1>
+  	<p>{{.Content}}</p>
+  	{{end}}
+  </div>
+</body>
+</html>

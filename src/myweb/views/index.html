@@ -12,7 +12,7 @@
   <div class="container">
   {{range .Topics}}
   	<div class="page-header">
-  		<h1>{{.Title}}</h1>
+  		<h1><a href="/topic/view/{{.Id}}">{{.Title}}</a></h1>
   		<h6 class="text-muted">文章发表于 {{.Created}},共有{{.Views}}次浏览，{{.RepalyCount}}个评论</h6>
   		<p>
   			{{.Content}}
