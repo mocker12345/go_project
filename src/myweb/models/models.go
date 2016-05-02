@@ -36,6 +36,14 @@ type Topic struct {
 	RepalyTime       time.Time `orm:"index"`
 	RepalyCount      int64
 	ReplayLastUserId int64
+	Category         string
+}
+type Commit struct {
+	Id      int64
+	Tid     int64
+	Name    string
+	Content string    `orm:size(1000)`
+	Created time.Time `orm:index`
 }
 
 func RegisterDB() {
@@ -43,10 +51,43 @@ func RegisterDB() {
 		os.MkdirAll(path.Dir(_DB_NAME), os.ModePerm)
 		os.Create(_DB_NAME)
 	}
-	orm.RegisterModel(new(Category), new(Topic))
+	orm.RegisterModel(new(Category), new(Topic), new(Commit))
 
 	orm.RegisterDriver(_SQLITE3_DEIVER, orm.DRSqlite)
 	orm.RegisterDataBase("default", _SQLITE3_DEIVER, _DB_NAME, 10)
+
+}
+func AddReply(tid, nikename, content string) error {
+	tidNum, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return err
+	}
+	o := orm.NewOrm()
+	reply := &Commit{
+		Tid:     tidNum,
+		Name:    nikename,
+		Content: content,
+		Created: time.Now(),
+	}
+	_, err = o.Insert(reply)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func GetAllReplies(tid string) (replies []*Commit, err error) {
+	tidNum, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	o := orm.NewOrm()
+	qs := o.QueryTable("commit")
+	replies = make([]*Commit, 0)
+	_, err = qs.Filter("tid", tidNum).All(&replies)
+	if err != nil {
+		return nil, err
+	}
+	return replies, err
 
 }
 
@@ -101,11 +142,12 @@ func GetAllCategory() ([]*Category, error) {
 	return cates, err
 }
 
-func AddTopic(title string, content string) error {
+func AddTopic(title string, content string, category string) error {
 	o := orm.NewOrm()
 	topic := &Topic{
 		Title:      title,
 		Content:    content,
+		Category:   category,
 		Created:    time.Now(),
 		Updated:    time.Now(),
 		RepalyTime: time.Now(),
@@ -144,7 +186,7 @@ func GetTopic(tid string) (*Topic, error) {
 	return topic, err
 }
 
-func TopicModify(tid, title, content string) error {
+func TopicModify(tid, title, content, category string) error {
 	tidNum, err := strconv.ParseInt(tid, 10, 64)
 	if err != nil {
 		return err
@@ -155,6 +197,7 @@ func TopicModify(tid, title, content string) error {
 		topic.Title = title
 		topic.Content = content
 		topic.Updated = time.Now()
+		topic.Category = category
 		o.Update(topic)
 	}
 	return nil

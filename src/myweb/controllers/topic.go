@@ -27,11 +27,12 @@ func (t *TopicController) Post() {
 	title := t.Input().Get("title")
 	content := t.Input().Get("content")
 	tid := t.Input().Get("tid")
+	category := t.Input().Get("category")
 	var err error
 	if len(tid) == 0 {
-		err = models.AddTopic(title, content)
+		err = models.AddTopic(title, content, category)
 	} else {
-		err = models.TopicModify(tid, title, content)
+		err = models.TopicModify(tid, title, content, category)
 	}
 	if err != nil {
 		beego.Error(err)
@@ -53,6 +54,8 @@ func (t *TopicController) View() {
 		t.Redirect("/", 302)
 		return
 	}
+	replise, err := models.GetAllReplies(t.Ctx.Input.Params()["0"])
+	t.Data["Replies"] = replise
 	t.Data["Topic"] = topic
 }
 func (t *TopicController) Modify() {
