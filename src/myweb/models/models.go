@@ -90,6 +90,19 @@ func GetAllReplies(tid string) (replies []*Commit, err error) {
 	return replies, err
 
 }
+func DeleteReply(rid string) error {
+	ridNum, err := strconv.ParseInt(rid, 10, 64)
+	if err != nil {
+		return err
+	}
+	o := orm.NewOrm()
+	reply := &Commit{Id: ridNum}
+	_, err = o.Delete(reply)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func AddCategory(name string) error {
 	o := orm.NewOrm()

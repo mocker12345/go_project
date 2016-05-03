@@ -10,9 +10,9 @@ type TopicController struct {
 }
 
 func (t *TopicController) Get() {
+	t.TplName = "topic.html"
 	t.Data["IsLogin"] = checkUser(t.Ctx)
 	t.Data["IsTopic"] = true
-	t.TplName = "topic.html"
 	topics, err := models.GetAllTopic(false)
 	if err != nil {
 		beego.Error(err)
@@ -57,6 +57,7 @@ func (t *TopicController) View() {
 	replise, err := models.GetAllReplies(t.Ctx.Input.Params()["0"])
 	t.Data["Replies"] = replise
 	t.Data["Topic"] = topic
+	t.Data["IsLogin"] = checkUser(t.Ctx)
 }
 func (t *TopicController) Modify() {
 	t.TplName = "topic_modify.html"

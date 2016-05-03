@@ -18,8 +18,12 @@
 
  	<div class="container">
  		<h4>回复列表</h4>
+ 		{{$tid := .Topic.Id}}
+ 		{{$isLogin := .IsLogin}}
  		{{range .Replies}}
- 		<div><h3>{{.Name}}<small>{{.Name}}---{{.Created}}</small></h3></div>
+ 		<div>
+ 		<h3>{{.Name}}<small>{{.Name}}---{{.Created}}</small>{{if $isLogin}}<a href="/reply/delete?tid={{$tid}}&rid={{.Id}}">删除</a>{{end}}</h3>
+ 		</div>
  		{{end}}
  		
  		<h3>添加回复</h3>
